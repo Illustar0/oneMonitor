@@ -22,6 +22,52 @@ id2room_index = {
 }
 
 
+logger.configure(
+    handlers=[
+        {
+            "sink": sys.stderr,
+            "format": "<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <lvl>{level:^8}</> - <cyan>{name}</cyan> : <cyan>{module}</cyan> : <cyan>{line:^4}</cyan> - <lvl>{message}</>",
+            "colorize": True,
+        }
+    ]
+)
+logger.add(
+    "worker.log",
+    rotation="10 MB",
+    retention="7 days",
+    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <lvl>{level:^8}</> - <cyan>{name}</cyan> : <cyan>{module}</cyan> : <cyan>{line:^4}</cyan> - <lvl>{message}</>",
+)
+
+
+# 更新房间的信息
+def update_room_info(room_id):
+    i = id2room_index.get(room_id)
+    data = {
+        "id": rooms[i]["id"],
+        "name": rooms[i]["name"],
+        "table_name": "room_" + rooms[i]["id"].replace("-", "_"),
+        "description": rooms[i]["description"],
+    }
+    try:
+        response = httpx.put(
+            f"{api_endpoint}/rooms/{room_id}",
+            cookies={"Authorization": f"{authkey}"},
+            json=data,
+        )
+        if response.status_code != 200:
+            logger.error(
+                f"Failed to update room information with id = {room_id}, API error"
+            )
+        response_json = json.loads(response.text)
+        if response_json["code"] != 200:
+            logger.error(
+                f"Failed to update room information with id = {room_id}, API returns: {response_json["msg"]}"
+            )
+        logger.info(f"Successfully updated room information with id = {room_id}")
+    except Exception as e:
+        logger.error(f"An error occurred in the PUT request, details: {e}")
+
+
 # 与云端数据同步
 def sync_data_with_cloud():
     logger.info("Synchronize with cloud data")
@@ -101,6 +147,13 @@ def sync_data_with_cloud():
             except Exception as e:
                 logger.error(f"An error occurred in the POST request, details: {e}")
                 continue
+    for room in rooms:
+        remote_rooms_index = remote_room_id_list.index(room["id"])
+        if (
+            response_rooms_data[remote_rooms_index][1] != room["name"]
+            or response_rooms_data[remote_rooms_index][3] != room["description"]
+        ):
+            update_room_info(room["id"])
     logger.info("Synchronization with cloud data completed")
 
 
