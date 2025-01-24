@@ -1,4 +1,5 @@
 import json
+import sys
 import httpx
 import pandas as pd
 import streamlit as st
@@ -11,6 +12,22 @@ interval = config["setting"]["refreshInterval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 authkey = config["setting"]["authKey"]
 
+logger.configure(
+    handlers=[
+        {
+            "sink": sys.stderr,
+            "format": "<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <lvl>{level:^8}</> - <cyan>{name}</cyan> : <cyan>{module}</cyan> : <cyan>{line:^4}</cyan> - <lvl>{message}</>",
+            "colorize": True,
+        }
+    ]
+)
+logger.add(
+    "worker.log",
+    rotation="10 MB",
+    retention="7 days",
+    format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <lvl>{level:^8}</> - <cyan>{name}</cyan> : <cyan>{module}</cyan> : <cyan>{line:^4}</cyan> - <lvl>{message}</>",
+)
+
 st.set_page_config(page_title=page_title)
 
 
@@ -20,7 +37,7 @@ def fetch_rooms():
         response = httpx.get(
             f"{api_endpoint}/rooms", cookies={"Authorization": f"{authkey}"}
         )
-        logger.info(f"ROOMS data refreshed successfully")
+        logger.info(f"Rooms data refreshed successfully")
         return response
     except Exception as e:
         logger.error(f"An error occurred while refreshing ROOMS data, details: {e}")
@@ -28,7 +45,7 @@ def fetch_rooms():
 
 
 @st.cache_data(ttl=interval)
-def fetch_room_elec(id):
+def fetch_room_electricity(id):
     try:
         response = httpx.get(
             f"{api_endpoint}/rooms/{id}",
@@ -52,7 +69,7 @@ if response:
     name2id = dict(zip(name_list, id_list))
 
     name = st.selectbox("选择房间", name_list)
-    response = fetch_room_elec(name2id[name])
+    response = fetch_room_electricity(name2id[name])
     df = pd.DataFrame(
         json.loads(response.text)["data"]["data"],
         columns=json.loads(response.text)["data"]["columns"],
