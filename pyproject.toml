@@ -16,6 +16,7 @@ fastapi = "^0.115.6"
 uvicorn = {extras = ["standard"], version = "^0.34.0"}
 plotly = "^5.24.1"
 loguru = "^0.7.3"
+streamlit-authenticator = "^0.4.1"
 
 
 [build-system]

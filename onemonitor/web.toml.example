@@ -1,5 +1,12 @@
 [setting]
-pageTitle="oneMonitor"
-refreshInterval=600
-apiEndpoint="http://127.0.0.1:8000"
-authKey="233"
+pageTitle = "oneMonitor"
+refreshInterval = 600
+apiEndpoint = "http://127.0.0.1:8000"
+authKey = "233"
+
+[auth.cookie]
+expiry_days = 30
+key = "a random key"
+name = "a cookie name"
+
+[auth.usernames]

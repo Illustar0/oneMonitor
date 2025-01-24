@@ -1,16 +1,20 @@
 [accounts]
-usercode="Your usercode"
-password="Your password"
+usercode = "Your usercode"
+password = "Your password"
+
 [setting]
-# 不要设定过低，会导致账号被锁定
-interval=7200
-apiEndpoint="http://localhost:8000"
-authKey="233"
+# 不要设置过低，会导致账号被锁定
+interval = 7200
+apiEndpoint = "http://localhost:8000"
+authKey = "233"
+
+[room]
 [room.444z]
-name="444 照明"
-description="444 寝室的照明"
-id="11-22--33-444"
+name = "444 照明"
+description = "444 寝室的照明"
+id = "11-22--33-444"
+
 [room.444k]
-name="444 空调"
-description="444 寝室的空调"
-id="11-22--55-444"
+name = "444 空调"
+description = "444 寝室的空调"
+id = "11-22--55-444"
