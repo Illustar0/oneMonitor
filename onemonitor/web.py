@@ -354,7 +354,6 @@ def on_logout_button_click(callback):
 
 def on_register_button_click(callback):
     update_config()
-    st.rerun()
 
 
 def update_config():
