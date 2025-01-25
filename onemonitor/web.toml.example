@@ -4,9 +4,12 @@ refreshInterval = 600
 apiEndpoint = "http://127.0.0.1:8000"
 authKey = "233"
 
+[auth]
+webAuth = true
+
 [auth.cookie]
-expiry_days = 30
-key = "a random key"
-name = "a cookie name"
+expiryDays = 30
+key = "a_random_key"
+name = "a_cookie_name"
 
 [auth.usernames]
