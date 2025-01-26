@@ -84,14 +84,6 @@ async def init_room(
     cursor = conn.cursor()
     try:
         cursor.execute(
-            f"""CREATE TABLE IF NOT EXISTS rooms(
-                id TEXT PRIMARY KEY NOT NULL,
-                name TEXT NOT NULL,
-                table_name TEXT NOT NULL,
-                room_group TEXT
-                );"""
-        )
-        cursor.execute(
             f"""REPLACE INTO rooms VALUES (
                            '{room.id}',
                            '{room.name}',
