@@ -182,14 +182,15 @@ def sync_data_with_cloud():
 def update_electricity(usercode, passwd):
     me = ZZUPy(usercode, passwd)
     me.login()
+    timestamp = int(time.time())
     for room_id in room_id_list:
-        time.sleep(1)
+        time.sleep(3)
         electricity = me.eCard.get_remaining_power(room_id)
         try:
             response = httpx.post(
                 f"{api_endpoint}/rooms/{room_id}",
                 cookies={"Authorization": f"{authkey}"},
-                json={"timestamp": int(time.time()), "electricity": float(electricity)},
+                json={"timestamp": timestamp, "electricity": float(electricity)},
             )
             if response.status_code != 200:
                 logger.error(
