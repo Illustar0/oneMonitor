@@ -417,12 +417,13 @@ if (
             "An error occurred while trying to get data for the rooms, details: {e}"
         )
     with st.sidebar:
-        st.title("🎈 Okld's Gallery")
+        st.title("Room list 😘")
 
         expanders = {}
         for group in unique_group_list:
-            expanders[group] = st.expander(group)
+            expanders[group] = st.expander(group,True)
         for name in name_list:
+            # 本来想用 st.page_link 的，多好看，可惜有特性没进版，用不了，哎
             if expanders[name2group[name]].checkbox(label=name):
                 response = fetch_room_electricity(name2id[name])
                 df = pd.DataFrame(
@@ -432,7 +433,8 @@ if (
                 df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
                 df.set_index("timestamp", inplace=True)
                 df_hourly = df.resample("h").mean().ffill()
-                df_hourly["room"] = name  # 添加房间标识列
+                # 添加房间标识列
+                df_hourly["room"] = name
                 electricity_data.append(df_hourly[["electricity", "room"]])
 
         if web_auth:
@@ -445,4 +447,4 @@ if (
             combined_df = pd.concat(electricity_data)
             st.line_chart(combined_df, y="electricity", color="room")
         else:
-            st.write("请选择至少一个房间以显示数据")
+            st.write("Please select at least one room to display data 😭")
