@@ -46,7 +46,7 @@ def update_room_info(room_id):
         "id": rooms[i]["id"],
         "name": rooms[i]["name"],
         "table_name": "room_" + rooms[i]["id"].replace("-", "_"),
-        "description": rooms[i]["description"],
+        "room_group": rooms[i]["group"],
     }
     try:
         response = httpx.put(
@@ -124,7 +124,7 @@ def sync_data_with_cloud():
                 "id": rooms[i]["id"],
                 "name": rooms[i]["name"],
                 "table_name": "room_" + rooms[i]["id"].replace("-", "_"),
-                "description": rooms[i]["description"],
+                "room_group": rooms[i]["group"],
             }
             try:
                 response = httpx.post(
@@ -148,10 +148,31 @@ def sync_data_with_cloud():
                 logger.error(f"An error occurred in the POST request, details: {e}")
                 continue
     for room in rooms:
+        # 偷个懒 (
+        try:
+            response = httpx.get(
+                f"{api_endpoint}/rooms", cookies={"Authorization": f"{authkey}"}
+            )
+            if response.status_code != 200:
+                logger.error(f"Failed to obtain room data from the cloud, API error")
+                sys.exit()
+            response_json = json.loads(response.text)
+            if response_json["code"] != 200:
+                logger.error(
+                    f"Failed to obtain room data from the cloud, API returns: {response_json["msg"]}"
+                )
+                sys.exit()
+        except Exception as e:
+            logger.error(f"An error occurred in the GET request, details: {e}")
+            sys.exit()
+        response_rooms_data = json.loads(response.text)["data"]["data"]
+        remote_room_id_list = [
+            response_rooms_data[i][0] for i in range(len(response_rooms_data))
+        ]
         remote_rooms_index = remote_room_id_list.index(room["id"])
         if (
             response_rooms_data[remote_rooms_index][1] != room["name"]
-            or response_rooms_data[remote_rooms_index][3] != room["description"]
+            or response_rooms_data[remote_rooms_index][3] != room["group"]
         ):
             update_room_info(room["id"])
     logger.info("Synchronization with cloud data completed")

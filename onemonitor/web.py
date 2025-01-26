@@ -373,6 +373,7 @@ if web_auth:
             if not config["auth"]["usernames"]:
                 st.warning("No login information is configured, please register first")
                 try:
+                    # noinspection PyUnboundLocalVariable
                     (
                         email_of_registered_user,
                         username_of_registered_user,
@@ -385,27 +386,44 @@ if web_auth:
                 except Exception as e:
                     st.error(e)
             else:
+                # noinspection PyUnboundLocalVariable
                 authenticator.login(captcha=True, callback=on_login_button_click)
     except Exception as e:
         st.error(e)
 
 
-if ("authentication_status" in st.session_state and st.session_state["authentication_status"] is True) or web_auth is not True:
+if (
+    "authentication_status" in st.session_state
+    and st.session_state["authentication_status"] is True
+) or web_auth is not True:
+    response = fetch_rooms()
+    electricity_data = []
 
-        with placeholder.container():
-            if web_auth:
-                authenticator.logout(callback=on_logout_button_click)
-            response = fetch_rooms()
+    if response:
+        id_list = [room[0] for room in json.loads(response.text)["data"]["data"]]
+        name_list = [room[1] for room in json.loads(response.text)["data"]["data"]]
+        table_name_list = [
+            room[2] for room in json.loads(response.text)["data"]["data"]
+        ]
+        group_list = [room[3] for room in json.loads(response.text)["data"]["data"]]
+        unique_group_list = sorted(list(set(group_list)))
+        name2group = dict(zip(name_list, group_list))
+        name2id = dict(zip(name_list, id_list))
+    else:
+        st.error(
+            "An error occurred while trying to get data for the rooms, details: {e}"
+        )
+        raise ValueError(
+            "An error occurred while trying to get data for the rooms, details: {e}"
+        )
+    with st.sidebar:
+        st.title("🎈 Okld's Gallery")
 
-            if response:
-                id_list = [room[0] for room in json.loads(response.text)["data"]["data"]]
-                name_list = [room[1] for room in json.loads(response.text)["data"]["data"]]
-                table_name_list = [
-                    room[2] for room in json.loads(response.text)["data"]["data"]
-                ]
-                name2id = dict(zip(name_list, id_list))
-
-                name = st.selectbox("选择房间", name_list)
+        expanders = {}
+        for group in unique_group_list:
+            expanders[group] = st.expander(group)
+        for name in name_list:
+            if expanders[name2group[name]].checkbox(label=name):
                 response = fetch_room_electricity(name2id[name])
                 df = pd.DataFrame(
                     json.loads(response.text)["data"]["data"],
@@ -413,13 +431,18 @@ if ("authentication_status" in st.session_state and st.session_state["authentica
                 )
                 df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
                 df.set_index("timestamp", inplace=True)
-                # 使用前向填充处理缺失值
                 df_hourly = df.resample("h").mean().ffill()
-                # 表来！
-                st.line_chart(df_hourly["electricity"])
-            else:
-                st.error(
-                    "An error occurred while trying to get data for the room id = {id}, details: {e}"
-                )
+                df_hourly["room"] = name  # 添加房间标识列
+                electricity_data.append(df_hourly[["electricity", "room"]])
 
+        if web_auth:
+            # noinspection PyUnboundLocalVariable
+            authenticator.logout(callback=on_logout_button_click, location="sidebar")
 
+    with placeholder.container():
+
+        if electricity_data:
+            combined_df = pd.concat(electricity_data)
+            st.line_chart(combined_df, y="electricity", color="room")
+        else:
+            st.write("请选择至少一个房间以显示数据")

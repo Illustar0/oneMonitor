@@ -1,3 +1,4 @@
+import os
 import sqlite3
 from fastapi import FastAPI, Depends, Cookie
 from pydantic import BaseModel
@@ -31,7 +32,7 @@ class Room(BaseModel):
     id: str
     name: str
     table_name: str
-    description: str
+    room_group: str
 
 
 def check_auth(authorization):
@@ -87,7 +88,7 @@ async def init_room(
                 id TEXT PRIMARY KEY NOT NULL,
                 name TEXT NOT NULL,
                 table_name TEXT NOT NULL,
-                description TEXT
+                room_group TEXT
                 );"""
         )
         cursor.execute(
@@ -95,7 +96,7 @@ async def init_room(
                            '{room.id}',
                            '{room.name}',
                            '{room.table_name}',
-                           '{room.description}'  
+                           '{room.room_group}'  
                            );"""
         )
         cursor.execute(
@@ -126,7 +127,7 @@ async def update_room(
     cursor = conn.cursor()
     try:
         cursor.execute(
-            f"""UPDATE rooms SET name = '{room_updated.name}', table_name = '{room_updated.table_name}', description = '{room_updated.description}' WHERE id = '{room}';"""
+            f"""UPDATE rooms SET name = '{room_updated.name}', table_name = '{room_updated.table_name}', room_group = '{room_updated.room_group}' WHERE id = '{room}';"""
         )
         conn.commit()
         status_code, status, msg, data = 200, "success", "", ""
@@ -248,5 +249,23 @@ async def delete(
     return _restful_result(status_code, status, msg, data)
 
 
+def init_db():
+    conn = sqlite3.connect("electricity.db", check_same_thread=False)
+    cursor = conn.cursor()
+    cursor.execute(
+        f"""CREATE TABLE IF NOT EXISTS rooms(
+                    id TEXT PRIMARY KEY NOT NULL,
+                    name TEXT NOT NULL,
+                    table_name TEXT NOT NULL,
+                    room_group TEXT NOT NULL
+                    );"""
+    )
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+
 if __name__ == "__main__":
+    if os.path.exists("electricity.db") is not True:
+        init_db()
     uvicorn.run(app, host=addr, port=port)
