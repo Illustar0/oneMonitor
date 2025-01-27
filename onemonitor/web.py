@@ -1,3 +1,5 @@
+# Copyright © 2025 Illustar0.
+# All rights reserved.
 import re
 import sys
 import json
@@ -38,6 +40,7 @@ if web_auth:
     from streamlit_authenticator import RegisterError, LoginError, Authenticate, params
 
     # 覆写原 streamlit-authenticator 的类以实现对注册页面的自定义
+    # Copyright(C)[2024][Mohammad Khorasani]
     class CustomValidator(Validator):
         def validate_password(self, password: str) -> bool:
             pattern = r"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[~!@#$%^&*()_+])[A-Za-z\d~!@#$%^&*()_+]{8,20}$"

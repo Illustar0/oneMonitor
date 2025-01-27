@@ -1,3 +1,5 @@
+# Copyright © 2025 Illustar0.
+# All rights reserved.
 import json
 import sys
 import time
