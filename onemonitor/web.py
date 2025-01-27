@@ -323,7 +323,7 @@ if web_auth:
 def fetch_rooms():
     try:
         response = httpx.get(
-            f"{api_endpoint}/rooms", cookies={"Authorization": f"{apikey}"}
+            f"{api_endpoint}/rooms", headers={"Authorization": f"{apikey}"}
         )
         logger.info(f"Rooms data refreshed successfully")
         return response
@@ -337,7 +337,7 @@ def fetch_room_electricity(id):
     try:
         response = httpx.get(
             f"{api_endpoint}/rooms/{id}",
-            cookies={"Authorization": f"{apikey}"},
+            headers={"Authorization": f"{apikey}"},
         )
         return response
     except Exception as e:
@@ -403,12 +403,12 @@ if (
     electricity_data = []
 
     if response:
-        id_list = [room[0] for room in json.loads(response.text)["data"]["data"]]
-        name_list = [room[1] for room in json.loads(response.text)["data"]["data"]]
+        id_list = [room["id"] for room in json.loads(response.text)["data"]]
+        name_list = [room["name"] for room in json.loads(response.text)["data"]]
         table_name_list = [
-            room[2] for room in json.loads(response.text)["data"]["data"]
+            room["table_name"] for room in json.loads(response.text)["data"]
         ]
-        group_list = [room[3] for room in json.loads(response.text)["data"]["data"]]
+        group_list = [room["room_group"] for room in json.loads(response.text)["data"]]
         unique_group_list = sorted(list(set(group_list)))
         name2group = dict(zip(name_list, group_list))
         name2id = dict(zip(name_list, id_list))
@@ -430,8 +430,7 @@ if (
             if expanders[name2group[name]].checkbox(label=name):
                 response = fetch_room_electricity(name2id[name])
                 df = pd.DataFrame(
-                    json.loads(response.text)["data"]["data"],
-                    columns=json.loads(response.text)["data"]["columns"],
+                    json.loads(response.text)["data"],
                 )
                 df["timestamp"] = pd.to_datetime(df["timestamp"], unit="s")
                 df.set_index("timestamp", inplace=True)
