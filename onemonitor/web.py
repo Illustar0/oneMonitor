@@ -421,7 +421,7 @@ if (
 
         expanders = {}
         for group in unique_group_list:
-            expanders[group] = st.expander(group,True)
+            expanders[group] = st.expander(group, True)
         for name in name_list:
             # 本来想用 st.page_link 的，多好看，可惜有特性没进版，用不了，哎
             if expanders[name2group[name]].checkbox(label=name):
