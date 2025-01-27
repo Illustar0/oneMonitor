@@ -14,7 +14,7 @@ config = toml.load("web.toml")
 page_title = config["setting"]["pageTitle"]
 interval = config["setting"]["refreshInterval"]
 api_endpoint = config["setting"]["apiEndpoint"]
-authkey = config["setting"]["authKey"]
+apikey = config["setting"]["apiKey"]
 web_auth = config["auth"]["webAuth"]
 
 logger.configure(
@@ -323,7 +323,7 @@ if web_auth:
 def fetch_rooms():
     try:
         response = httpx.get(
-            f"{api_endpoint}/rooms", cookies={"Authorization": f"{authkey}"}
+            f"{api_endpoint}/rooms", cookies={"Authorization": f"{apikey}"}
         )
         logger.info(f"Rooms data refreshed successfully")
         return response
@@ -337,7 +337,7 @@ def fetch_room_electricity(id):
     try:
         response = httpx.get(
             f"{api_endpoint}/rooms/{id}",
-            cookies={"Authorization": f"{authkey}"},
+            cookies={"Authorization": f"{apikey}"},
         )
         return response
     except Exception as e:

@@ -14,7 +14,7 @@ usercode = config["accounts"]["usercode"]
 password = config["accounts"]["password"]
 interval = config["setting"]["interval"]
 api_endpoint = config["setting"]["apiEndpoint"]
-authkey = config["setting"]["authKey"]
+apikey = config["setting"]["apiKey"]
 
 
 rooms = [data for i, data in config["room"].items()]
@@ -53,7 +53,7 @@ def update_room_info(room_id):
     try:
         response = httpx.put(
             f"{api_endpoint}/rooms/{room_id}",
-            cookies={"Authorization": f"{authkey}"},
+            cookies={"Authorization": f"{apikey}"},
             json=data,
         )
         if response.status_code != 200:
@@ -75,7 +75,7 @@ def sync_data_with_cloud():
     logger.info("Synchronize with cloud data")
     try:
         response = httpx.get(
-            f"{api_endpoint}/rooms", cookies={"Authorization": f"{authkey}"}
+            f"{api_endpoint}/rooms", cookies={"Authorization": f"{apikey}"}
         )
         if response.status_code != 200:
             logger.error(f"Failed to obtain room data from the cloud, API error")
@@ -100,7 +100,7 @@ def sync_data_with_cloud():
             try:
                 response = httpx.delete(
                     f"{api_endpoint}/rooms/{room_id}",
-                    cookies={"Authorization": f"{authkey}"},
+                    cookies={"Authorization": f"{apikey}"},
                 )
                 if response.status_code != 200:
                     logger.error(
@@ -131,7 +131,7 @@ def sync_data_with_cloud():
             try:
                 response = httpx.post(
                     f"{api_endpoint}/rooms",
-                    cookies={"Authorization": f"{authkey}"},
+                    cookies={"Authorization": f"{apikey}"},
                     json=data,
                 )
                 if response.status_code != 200:
@@ -153,7 +153,7 @@ def sync_data_with_cloud():
         # 偷个懒 (
         try:
             response = httpx.get(
-                f"{api_endpoint}/rooms", cookies={"Authorization": f"{authkey}"}
+                f"{api_endpoint}/rooms", cookies={"Authorization": f"{apikey}"}
             )
             if response.status_code != 200:
                 logger.error(f"Failed to obtain room data from the cloud, API error")
@@ -191,7 +191,7 @@ def update_electricity(usercode, passwd):
         try:
             response = httpx.post(
                 f"{api_endpoint}/rooms/{room_id}",
-                cookies={"Authorization": f"{authkey}"},
+                cookies={"Authorization": f"{apikey}"},
                 json={"timestamp": timestamp, "electricity": float(electricity)},
             )
             if response.status_code != 200:

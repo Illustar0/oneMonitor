@@ -2,7 +2,7 @@
 pageTitle = "oneMonitor"
 refreshInterval = 600
 apiEndpoint = "http://127.0.0.1:8000"
-authKey = "233"
+apiKey = "233"
 
 [auth]
 webAuth = true

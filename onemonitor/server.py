@@ -17,8 +17,8 @@ import toml
 config = toml.load("server.toml")
 addr = config["setting"]["listenAddr"]
 port = config["setting"]["listenPort"]
-authkey = config["setting"]["authKey"]
-auth_key_header = APIKeyHeader(name="Authorization", auto_error=False)
+apikey = config["setting"]["apiKey"]
+api_key_header = APIKeyHeader(name="Authorization", auto_error=False)
 
 
 def get_db():
@@ -85,9 +85,9 @@ class ValidationErrorResponseModel(FailResponseModel):
     )
 
 
-def check_auth_key(auth_key: str = Security(auth_key_header)) -> str:
-    if auth_key == authkey:
-        return auth_key
+def check_api_key(api_key: str = Security(api_key_header)) -> str:
+    if api_key == apikey:
+        return api_key
     raise AuthKeyException
 
 
@@ -127,7 +127,7 @@ async def add(
     room: str,
     electricity: ElectricityData,
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
 
     cursor = conn.cursor()
@@ -157,7 +157,7 @@ async def add(
 async def add_room(
     room: RoomData,
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
 
     cursor = conn.cursor()
@@ -198,7 +198,7 @@ async def update_room(
     room: str,
     room_updated: RoomData,
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
 
     cursor = conn.cursor()
@@ -227,7 +227,7 @@ async def update_room(
 async def delete_room(
     room: str,
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
 
     cursor = conn.cursor()
@@ -263,7 +263,7 @@ async def delete_room(
 async def room_electricity(
     room: str,
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
     #
     cursor = conn.cursor()
@@ -303,7 +303,7 @@ async def room_electricity(
 )
 async def info(
     conn: sqlite3.Connection = Depends(get_db),
-    auth_key: str = Security(check_auth_key),
+    api_key: str = Security(check_api_key),
 ):
     cursor = conn.cursor()
     try:

@@ -6,7 +6,7 @@ password = "Your password"
 # 不要设置过低，会导致账号被锁定
 interval = 7200
 apiEndpoint = "http://localhost:8000"
-authKey = "233"
+apiKey = "233"
 
 [room]
 [room.444z]
