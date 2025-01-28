@@ -319,7 +319,7 @@ if web_auth:
     )
 
 
-@st.cache_data(ttl=interval)
+@st.cache_data(ttl=60)
 def get_hitokoto():
     try:
         response = httpx.get(f"https://v1.hitokoto.cn")
