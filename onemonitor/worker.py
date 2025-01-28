@@ -61,7 +61,7 @@ def update_room_info(room_id):
                 f"Failed to update room information with id = {room_id}, API error"
             )
         response_json = json.loads(response.text)
-        if response_json["code"] != 200:
+        if response_json["status"] != "success":
             logger.error(
                 f"Failed to update room information with id = {room_id}, API returns: {response_json["msg"]}"
             )
@@ -81,7 +81,7 @@ def sync_data_with_cloud():
             logger.error(f"Failed to obtain room data from the cloud, API error")
             sys.exit()
         response_json = json.loads(response.text)
-        if response_json["code"] != 200:
+        if response_json["status"] != "success":
             logger.error(
                 f"Failed to obtain room data from the cloud, API returns: {response_json["msg"]}"
             )
@@ -89,12 +89,13 @@ def sync_data_with_cloud():
     except Exception as e:
         logger.error(f"An error occurred in the GET request, details: {e}")
         sys.exit()
-    response_rooms_data = json.loads(response.text)["data"]["data"]
+    response_rooms_data = json.loads(response.text)["data"]
     remote_room_id_list = [
-        response_rooms_data[i][0] for i in range(len(response_rooms_data))
+        response_room_data["id"] for response_room_data in response_rooms_data
     ]
-    rooms_should_be_delete = list(set(remote_room_id_list) - set(room_id_list))
+    # rooms_should_be_delete = list(set(remote_room_id_list) - set(room_id_list))
     rooms_should_be_add = list(set(room_id_list) - set(remote_room_id_list))
+    """
     if rooms_should_be_delete is not None:
         for room_id in rooms_should_be_delete:
             try:
@@ -108,7 +109,7 @@ def sync_data_with_cloud():
                     )
                     continue
                 response_json = json.loads(response.text)
-                if response_json["code"] != 200:
+                if response_json["status"] != "success":
                     logger.error(
                         f"An attempt to delete the room data with id = {room_id} failed, API returns: {response_json["msg"]}"
                     )
@@ -119,6 +120,7 @@ def sync_data_with_cloud():
             except Exception as e:
                 logger.error(f"An error occurred in the DELETE request, details: {e}")
                 continue
+    """
     if rooms_should_be_add is not None:
         for room_id in rooms_should_be_add:
             i = id2room_index.get(room_id)
@@ -140,7 +142,7 @@ def sync_data_with_cloud():
                     )
                     continue
                 response_json = json.loads(response.text)
-                if response_json["code"] != 200:
+                if response_json["status"] != "success":
                     logger.error(
                         f"Failed to initialize room data with id = {room_id}, API returns: {response_json["msg"]}"
                     )
@@ -159,7 +161,7 @@ def sync_data_with_cloud():
                 logger.error(f"Failed to obtain room data from the cloud, API error")
                 sys.exit()
             response_json = json.loads(response.text)
-            if response_json["code"] != 200:
+            if response_json["status"] != "success":
                 logger.error(
                     f"Failed to obtain room data from the cloud, API returns: {response_json["msg"]}"
                 )
@@ -167,14 +169,14 @@ def sync_data_with_cloud():
         except Exception as e:
             logger.error(f"An error occurred in the GET request, details: {e}")
             sys.exit()
-        response_rooms_data = json.loads(response.text)["data"]["data"]
+        response_rooms_data = json.loads(response.text)["data"]
         remote_room_id_list = [
-            response_rooms_data[i][0] for i in range(len(response_rooms_data))
+            response_room_data["id"] for response_room_data in response_rooms_data
         ]
         remote_rooms_index = remote_room_id_list.index(room["id"])
         if (
-            response_rooms_data[remote_rooms_index][1] != room["name"]
-            or response_rooms_data[remote_rooms_index][3] != room["group"]
+            response_rooms_data[remote_rooms_index]["name"] != room["name"]
+            or response_rooms_data[remote_rooms_index]["room_group"] != room["group"]
         ):
             update_room_info(room["id"])
     logger.info("Synchronization with cloud data completed")
@@ -200,7 +202,7 @@ def update_electricity(usercode, passwd):
                 )
                 continue
             response_json = json.loads(response.text)
-            if response_json["code"] != 200:
+            if response_json["status"] != "success":
                 logger.error(
                     f"Failed to add the electricity record with id = {room_id}, API returns: {response_json["msg"]}"
                 )
