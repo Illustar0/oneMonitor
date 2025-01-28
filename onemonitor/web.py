@@ -320,6 +320,17 @@ if web_auth:
 
 
 @st.cache_data(ttl=interval)
+def get_hitokoto():
+    try:
+        response = httpx.get(f"https://v1.hitokoto.cn")
+        logger.info(f"Hitokoto got successfully")
+        return response
+    except Exception as e:
+        logger.error(f"An error occurred while getting hitokoto, details: {e}")
+        return None
+
+
+@st.cache_data(ttl=interval)
 def fetch_rooms():
     try:
         response = httpx.get(
@@ -444,9 +455,20 @@ if (
             authenticator.logout(callback=on_logout_button_click, location="sidebar")
 
     with placeholder.container():
-
+        st.title("Electricity Data 😎")
         if electricity_data:
             combined_df = pd.concat(electricity_data)
             st.line_chart(combined_df, y="electricity", color="room")
+            with st.expander("Hitokoto · 一言"):
+                hitokoto_data_json = json.loads(get_hitokoto().text)
+                st.write(f"『{hitokoto_data_json["hitokoto"]}』")
+                st.markdown(
+                    f"""
+                    <div style="text-align: right;">
+                        ——『{hitokoto_data_json["from"]}』
+                    </div>
+                    """,
+                    unsafe_allow_html=True,
+                )
         else:
             st.write("Please select at least one room to display data 😭")
