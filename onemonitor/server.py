@@ -264,6 +264,7 @@ async def room_electricity(
     room: str,
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
+    filter: str = "all"
 ):
     #
     cursor = conn.cursor()
@@ -276,7 +277,14 @@ async def room_electricity(
         response = ErrorResponseModel(status=StatusEnum.error, msg=str(e), data=None)
         return JSONResponse(json.loads(response.model_dump_json()), 500)
     try:
-        cursor.execute(f"""SELECT * FROM {room_table_name}""")
+        if filter == "all":
+            cursor.execute(f"""SELECT * FROM {room_table_name}""")
+
+        elif filter == "latest":
+            cursor.execute(f"""SELECT * FROM {room_table_name} ORDER BY timestamp DESC LIMIT 1;""")
+        else:
+            response = ErrorResponseModel(status=StatusEnum.error, msg="Unknown filter.", data=None)
+            return JSONResponse(json.loads(response.model_dump_json()), 500)
         rows = cursor.fetchall()
         response = RoomElectricityResponseModel(
             status=StatusEnum.success,
@@ -286,6 +294,9 @@ async def room_electricity(
             ],
         )
     except sqlite3.Error as e:
+        response = ErrorResponseModel(status=StatusEnum.error, msg=str(e), data=None)
+        return JSONResponse(json.loads(response.model_dump_json()), 500)
+    except Exception as e:
         response = ErrorResponseModel(status=StatusEnum.error, msg=str(e), data=None)
         return JSONResponse(json.loads(response.model_dump_json()), 500)
     finally:
