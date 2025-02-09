@@ -209,7 +209,6 @@ if web_auth:
             key: str = "Register user",
             callback: Optional[Callable] = None,
         ) -> tuple:
-
             if isinstance(pre_authorized, bool) or isinstance(pre_authorized, dict):
                 raise DeprecationError(
                     f"""Please note that the 'pre_authorized' parameter now
@@ -461,7 +460,7 @@ if (
             st.line_chart(combined_df, y="electricity", color="room")
             with st.expander("Hitokoto · 一言"):
                 hitokoto_data_json = json.loads(get_hitokoto().text)
-                st.write(f"『{hitokoto_data_json["hitokoto"]}』")
+                st.write(f"『{hitokoto_data_json['hitokoto']}』")
                 st.markdown(
                     f"""
                     <div style="text-align: right;">

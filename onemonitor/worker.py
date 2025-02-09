@@ -17,15 +17,15 @@ interval = config["setting"]["interval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 apikey = config["setting"]["apiKey"]
 
-alarm_line=config["setting"]["alarmLine"]
-warning_line=config["setting"]["warningLine"]
+alarm_line = config["setting"]["alarmLine"]
+warning_line = config["setting"]["warningLine"]
 
-pushes=[data for i, data in config["push"].items()]
+pushes = [data for i, data in config["push"].items()]
 push_name_list = [pushes[i]["name"] for i in range(len(pushes))]
 push_provider_list = [pushes[i]["provider"] for i in range(len(pushes))]
 push_params_list = [pushes[i]["params"] for i in range(len(pushes))]
-name2provider=dict(zip(push_name_list,push_provider_list))
-name2params=dict(zip(push_name_list,push_params_list))
+name2provider = dict(zip(push_name_list, push_provider_list))
+name2params = dict(zip(push_name_list, push_params_list))
 
 rooms = [data for i, data in config["room"].items()]
 room_id_list = [rooms[i]["id"] for i in range(len(rooms))]
@@ -73,7 +73,7 @@ def update_room_info(room_id):
         response_json = json.loads(response.text)
         if response_json["status"] != "success":
             logger.error(
-                f"Failed to update room information with id = {room_id}, API returns: {response_json["msg"]}"
+                f"Failed to update room information with id = {room_id}, API returns: {response_json['msg']}"
             )
         logger.info(f"Successfully updated room information with id = {room_id}")
     except Exception as e:
@@ -93,7 +93,7 @@ def sync_data_with_cloud():
         response_json = json.loads(response.text)
         if response_json["status"] != "success":
             logger.error(
-                f"Failed to obtain room data from the cloud, API returns: {response_json["msg"]}"
+                f"Failed to obtain room data from the cloud, API returns: {response_json['msg']}"
             )
             sys.exit()
     except Exception as e:
@@ -154,7 +154,7 @@ def sync_data_with_cloud():
                 response_json = json.loads(response.text)
                 if response_json["status"] != "success":
                     logger.error(
-                        f"Failed to initialize room data with id = {room_id}, API returns: {response_json["msg"]}"
+                        f"Failed to initialize room data with id = {room_id}, API returns: {response_json['msg']}"
                     )
                     continue
                 logger.info(f"Successfully initialized room data with id = {room_id}")
@@ -173,7 +173,7 @@ def sync_data_with_cloud():
             response_json = json.loads(response.text)
             if response_json["status"] != "success":
                 logger.error(
-                    f"Failed to obtain room data from the cloud, API returns: {response_json["msg"]}"
+                    f"Failed to obtain room data from the cloud, API returns: {response_json['msg']}"
                 )
                 sys.exit()
         except Exception as e:
@@ -202,13 +202,23 @@ def update_electricity(usercode, passwd):
         electricity = me.eCard.get_remaining_power(room_id)
         if "pushName" in rooms[id2room_index[room_id]]:
             if float(electricity) < alarm_line:
-                n = Notifier(name2provider[rooms[id2room_index[room_id]]["pushName"]],
-                             **name2params[rooms[id2room_index[room_id]]["pushName"]])
-                n.notify(title="电费马上要用完啦！！！", content=f"{rooms[id2room_index[room_id]]["name"]} 剩余电费：{electricity}")
+                n = Notifier(
+                    name2provider[rooms[id2room_index[room_id]]["pushName"]],
+                    **name2params[rooms[id2room_index[room_id]]["pushName"]],
+                )
+                n.notify(
+                    title="电费马上要用完啦！！！",
+                    content=f"{rooms[id2room_index[room_id]]['name']} 剩余电费：{electricity}",
+                )
             elif float(electricity) < warning_line:
-                n = Notifier(name2provider[rooms[id2room_index[room_id]]["pushName"]],
-                             **name2params[rooms[id2room_index[room_id]]["pushName"]])
-                n.notify(title="电费快要用完了", content=f"{rooms[id2room_index[room_id]]["name"]} 剩余电费：{electricity}")
+                n = Notifier(
+                    name2provider[rooms[id2room_index[room_id]]["pushName"]],
+                    **name2params[rooms[id2room_index[room_id]]["pushName"]],
+                )
+                n.notify(
+                    title="电费快要用完了",
+                    content=f"{rooms[id2room_index[room_id]]['name']} 剩余电费：{electricity}",
+                )
         try:
             response = httpx.post(
                 f"{api_endpoint}/rooms/{room_id}",
@@ -223,7 +233,7 @@ def update_electricity(usercode, passwd):
             response_json = json.loads(response.text)
             if response_json["status"] != "success":
                 logger.error(
-                    f"Failed to add the electricity record with id = {room_id}, API returns: {response_json["msg"]}"
+                    f"Failed to add the electricity record with id = {room_id}, API returns: {response_json['msg']}"
                 )
                 continue
             logger.info(f"Successfully added the power data of room id = {room_id}")

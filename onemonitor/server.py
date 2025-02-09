@@ -129,7 +129,6 @@ async def add(
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
 ):
-
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -159,7 +158,6 @@ async def add_room(
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
 ):
-
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -200,7 +198,6 @@ async def update_room(
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
 ):
-
     cursor = conn.cursor()
     try:
         cursor.execute(
@@ -229,7 +226,6 @@ async def delete_room(
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
 ):
-
     cursor = conn.cursor()
     if room == "rooms":
         response = ErrorResponseModel(
@@ -264,7 +260,7 @@ async def room_electricity(
     room: str,
     conn: sqlite3.Connection = Depends(get_db),
     api_key: str = Security(check_api_key),
-    filter: str = "all"
+    filter: str = "all",
 ):
     #
     cursor = conn.cursor()
@@ -281,9 +277,13 @@ async def room_electricity(
             cursor.execute(f"""SELECT * FROM {room_table_name}""")
 
         elif filter == "latest":
-            cursor.execute(f"""SELECT * FROM {room_table_name} ORDER BY timestamp DESC LIMIT 1;""")
+            cursor.execute(
+                f"""SELECT * FROM {room_table_name} ORDER BY timestamp DESC LIMIT 1;"""
+            )
         else:
-            response = ErrorResponseModel(status=StatusEnum.error, msg="Unknown filter.", data=None)
+            response = ErrorResponseModel(
+                status=StatusEnum.error, msg="Unknown filter.", data=None
+            )
             return JSONResponse(json.loads(response.model_dump_json()), 500)
         rows = cursor.fetchall()
         response = RoomElectricityResponseModel(
