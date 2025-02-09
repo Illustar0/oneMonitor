@@ -1161,6 +1161,22 @@ dev = ["abi3audit", "black", "check-manifest", "coverage", "packaging", "pylint"
 test = ["enum34", "futures", "ipaddress", "mock (==1.0.1)", "pytest (==4.6.11)", "pytest-xdist", "setuptools", "unittest2"]
 
 [[package]]
+name = "pushx"
+version = "0.4.0"
+description = "One-Stop Python Push Solution"
+optional = false
+python-versions = ">=3.9,<4.0"
+groups = ["main"]
+files = [
+    {file = "pushx-0.4.0-py3-none-any.whl", hash = "sha256:c90a870aab9116f4a6357b17f0cdd77eac99bdde455af7d9704e0452220b67cb"},
+    {file = "pushx-0.4.0.tar.gz", hash = "sha256:e15b61772c69ce3f62deaf45c12f24463ef98fdac0ef065f82ba427566cf76ea"},
+]
+
+[package.dependencies]
+httpx = ">=0.28.1,<0.29.0"
+pydantic = ">=2.10.6,<3.0.0"
+
+[[package]]
 name = "pyarrow"
 version = "19.0.0"
 description = "Python library for Apache Arrow"
@@ -2356,4 +2372,4 @@ typing-extensions = "*"
 [metadata]
 lock-version = "2.1"
 python-versions = "^3.12"
-content-hash = "b90d5d9131501f55328ecaab56b74bde73208104f4d416ea64a12f32aa66594a"
+content-hash = "1d2c598289bafd9de0d905f848dce1bc3bcfe8cbad2fb96ea7845eda423a7c4c"
