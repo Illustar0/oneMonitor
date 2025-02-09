@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v0.2.0 (2025-02-09)
+
+### Chores
+
+- Bump dependencies
+  ([`5edd86c`](https://github.com/Illustar0/oneMonitor/commit/5edd86c6f4e82078fb9d2a7ef1c271f728831021))
+
+- Fix a field error
+  ([`e6cc18c`](https://github.com/Illustar0/oneMonitor/commit/e6cc18cb00a313ed318cab2b6e269605c076b5ea))
+
+Signed-off-by: Illustar0 <me@illustar0.com>
+
+### Features
+
+- Add low battery push notification
+  ([`d7957cd`](https://github.com/Illustar0/oneMonitor/commit/d7957cd5d332d616eb27cc3fb15f054f80370f60))
+
+### Refactoring
+
+- Use ruff to replace black
+  ([`a024028`](https://github.com/Illustar0/oneMonitor/commit/a0240281c89afcdfa4db6511d87d3ac027bd2119))
+
+
 ## v0.1.0 (2025-02-09)
 
 ### Bug Fixes

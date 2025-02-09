@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "onemonitor"
-version = "0.1.0"
+version = "0.2.0"
 description = ""
 authors = ["Illustar0 <me@illustar0.com>"]
 readme = "README.md"
