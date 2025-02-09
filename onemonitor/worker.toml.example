@@ -7,14 +7,22 @@ password = "Your password"
 interval = 7200
 apiEndpoint = "http://localhost:8000"
 apiKey = "233"
+alarmLine=10
+warningLine=20
 
 [room]
 [room.444z]
 name = "444 照明"
 group = "✨ 444"
 id = "11-22--41-444"
+pushName="Ntfy1"
 
 [room.444k]
 name = "444 空调"
 group = "✨ 444"
 id = "11-22--42-8444"
+
+[push.aa]
+name="Ntfy1"
+provider="Ntfy"
+params={ topic="233" }

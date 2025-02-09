@@ -5,6 +5,7 @@ import sys
 import time
 import toml
 import httpx
+from pushx import Notifier
 from zzupy import ZZUPy
 from loguru import logger
 
@@ -16,6 +17,15 @@ interval = config["setting"]["interval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 apikey = config["setting"]["apiKey"]
 
+alarm_line=config["setting"]["alarmLine"]
+warning_line=config["setting"]["warningLine"]
+
+pushes=[data for i, data in config["push"].items()]
+push_name_list = [pushes[i]["name"] for i in range(len(pushes))]
+push_provider_list = [pushes[i]["provider"] for i in range(len(pushes))]
+push_params_list = [pushes[i]["params"] for i in range(len(pushes))]
+name2provider=dict(zip(push_name_list,push_provider_list))
+name2params=dict(zip(push_name_list,push_params_list))
 
 rooms = [data for i, data in config["room"].items()]
 room_id_list = [rooms[i]["id"] for i in range(len(rooms))]
@@ -182,7 +192,7 @@ def sync_data_with_cloud():
     logger.info("Synchronization with cloud data completed")
 
 
-# 更新电量
+# 更新电量 同时 通知
 def update_electricity(usercode, passwd):
     me = ZZUPy(usercode, passwd)
     me.login()
@@ -190,6 +200,15 @@ def update_electricity(usercode, passwd):
     for room_id in room_id_list:
         time.sleep(3)
         electricity = me.eCard.get_remaining_power(room_id)
+        if "pushName" in rooms[id2room_index[room_id]]:
+            if float(electricity) < alarm_line:
+                n = Notifier(name2provider[rooms[id2room_index[room_id]]["pushName"]],
+                             **name2params[rooms[id2room_index[room_id]]["pushName"]])
+                n.notify(title="电费马上要用完啦！！！", content=f"{rooms[id2room_index[room_id]]["name"]} 剩余电费：{electricity}")
+            elif float(electricity) < warning_line:
+                n = Notifier(name2provider[rooms[id2room_index[room_id]]["pushName"]],
+                             **name2params[rooms[id2room_index[room_id]]["pushName"]])
+                n.notify(title="电费快要用完了", content=f"{rooms[id2room_index[room_id]]["name"]} 剩余电费：{electricity}")
         try:
             response = httpx.post(
                 f"{api_endpoint}/rooms/{room_id}",
