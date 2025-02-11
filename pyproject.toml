@@ -1,28 +1,29 @@
-[tool.poetry]
+[project]
 name = "onemonitor"
 version = "0.2.0"
 description = ""
-authors = ["Illustar0 <me@illustar0.com>"]
+authors = [{ name = "Illustar0", email = "me@illustar0.com" }]
+requires-python = "~=3.12"
 readme = "README.md"
-package-mode = false
+dependencies = [
+    "zzupy>=1.0.2,<2",
+    "streamlit>=1.41.1,<2",
+    "sqlalchemy>=2.0.36,<3",
+    "toml>=0.10.2,<0.11",
+    "fastapi>=0.115.6,<0.116",
+    "uvicorn[standard]>=0.34.0,<0.35",
+    "plotly>=5.24.1,<6",
+    "loguru>=0.7.3,<0.8",
+    "streamlit-authenticator>=0.4.1,<0.5",
+    "pushx>=0.4.0,<0.5",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-zzupy = "^0.2.0"
-streamlit = "^1.41.1"
-sqlalchemy = "^2.0.36"
-toml = "^0.10.2"
-fastapi = "^0.115.6"
-uvicorn = {extras = ["standard"], version = "^0.34.0"}
-plotly = "^5.24.1"
-loguru = "^0.7.3"
-streamlit-authenticator = "^0.4.1"
-pushx = "^0.4.0"
-
+[tool.uv]
+package = false
 
 [build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
 
 [tool.semantic_release]
 version_toml = [
