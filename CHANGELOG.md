@@ -1,6 +1,29 @@
 # CHANGELOG
 
 
+## v0.2.1 (2025-02-11)
+
+### Bug Fixes
+
+- **deps**: Update dependency plotly to v6 ([#3](https://github.com/Illustar0/oneMonitor/pull/3),
+  [`edf9379`](https://github.com/Illustar0/oneMonitor/commit/edf93792461c7396f241d777b26b5483e9b5ad1f))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+### Chores
+
+- Replace poetry with uv
+  ([`d1a433e`](https://github.com/Illustar0/oneMonitor/commit/d1a433ee89628697e7f2a99dbfaa13070300c9f0))
+
+uv is really too fast!
+
+- **deps**: Update python-semantic-release/python-semantic-release action to v9.19.1
+  ([#2](https://github.com/Illustar0/oneMonitor/pull/2),
+  [`5ec687f`](https://github.com/Illustar0/oneMonitor/commit/5ec687f3cc4c17dd96131b55ddae88b2d896a77d))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+
 ## v0.2.0 (2025-02-09)
 
 ### Chores
