@@ -1,4 +1,5 @@
 version = 1
+revision = 1
 requires-python = ">=3.12, <4"
 
 [[package]]
@@ -542,7 +543,7 @@ requires-dist = [
     { name = "streamlit-authenticator", specifier = ">=0.4.1,<0.5" },
     { name = "toml", specifier = ">=0.10.2,<0.11" },
     { name = "uvicorn", extras = ["standard"], specifier = ">=0.34.0,<0.35" },
-    { name = "zzupy", specifier = ">=1.0.2,<2" },
+    { name = "zzupy", specifier = ">=2.0.0,<3" },
 ]
 
 [[package]]
@@ -1283,7 +1284,7 @@ wheels = [
 
 [[package]]
 name = "zzupy"
-version = "1.0.2"
+version = "2.1.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "beautifulsoup4" },
@@ -1295,7 +1296,7 @@ dependencies = [
     { name = "pycryptodome" },
     { name = "typing-extensions" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/41/31/c291a580a66584eef2d58865ad601f2ba47fbc44b483aaa28a333ec0e0e6/zzupy-1.0.2.tar.gz", hash = "sha256:ccf9c3536b7e0526751e4b05fba7544ff7d855c7a6198a2e97432c8823cdc92c", size = 11516 }
+sdist = { url = "https://files.pythonhosted.org/packages/55/fa/06064c5959f2214faad9f14eed9f56c4252ea78154771f0e10fc7f9cd66e/zzupy-2.1.0.tar.gz", hash = "sha256:1eeb903dd4ad7c89eae948ba05f1d53aa8370f989ceb22cfbdea55e08b72b0ae", size = 22141 }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/b2/a7/d4106f4213dbb9180af342f3c3c720579bf2e1761fed5952745403094e2e/zzupy-1.0.2-py3-none-any.whl", hash = "sha256:90d9df34c6e9cc41fb454a54fe2290f77b25440b577ed697696e68ed2c6ceca7", size = 14766 },
+    { url = "https://files.pythonhosted.org/packages/cd/c8/4078a366ac51185cb9e344e688f29ce5378ec3f2e6f19e8fd06a553e53cd/zzupy-2.1.0-py3-none-any.whl", hash = "sha256:ab290b5639c1eebf6dfc31ac5c6fcd0891356940964b50eedb997c2905b2c5cd", size = 16252 },
 ]
