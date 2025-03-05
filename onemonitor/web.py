@@ -15,7 +15,6 @@ page_title = config["setting"]["pageTitle"]
 interval = config["setting"]["refreshInterval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 apikey = config["setting"]["apiKey"]
-web_auth = config["auth"]["webAuth"]
 
 logger.configure(
     handlers=[
@@ -86,17 +85,13 @@ electricity_data = []
 if response:
     id_list = [room["id"] for room in json.loads(response.text)["data"]]
     name_list = [room["name"] for room in json.loads(response.text)["data"]]
-    table_name_list = [
-        room["table_name"] for room in json.loads(response.text)["data"]
-    ]
+    table_name_list = [room["table_name"] for room in json.loads(response.text)["data"]]
     group_list = [room["room_group"] for room in json.loads(response.text)["data"]]
     unique_group_list = sorted(list(set(group_list)))
     name2group = dict(zip(name_list, group_list))
     name2id = dict(zip(name_list, id_list))
 else:
-    st.error(
-        "An error occurred while trying to get data for the rooms, details: {e}"
-    )
+    st.error("An error occurred while trying to get data for the rooms, details: {e}")
     raise ValueError(
         "An error occurred while trying to get data for the rooms, details: {e}"
     )
@@ -142,5 +137,3 @@ with placeholder.container():
             )
     else:
         st.write("Please select at least one room to display data 😭")
-
-
