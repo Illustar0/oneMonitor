@@ -8,6 +8,7 @@ import httpx
 from pushx import Notifier
 from zzupy import ZZUPy
 from loguru import logger
+from http.cookies import SimpleCookie
 
 # 读取配置
 config = toml.load("worker.toml")
@@ -16,6 +17,10 @@ password = config["accounts"]["password"]
 interval = config["setting"]["interval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 apikey = config["setting"]["apiKey"]
+if "cookie"in config["accounts"]:
+    cookie = SimpleCookie().load(config["accounts"]["cookie"])
+else:
+    cookie = None
 
 alarm_line = config["setting"]["alarmLine"]
 warning_line = config["setting"]["warningLine"]
@@ -193,8 +198,8 @@ def sync_data_with_cloud():
 
 
 # 更新电量 同时 通知
-def update_electricity(usercode, passwd):
-    me = ZZUPy(usercode, passwd)
+def update_electricity(usercode, passwd, cookie = None):
+    me = ZZUPy(usercode, passwd, cookie)
     me.login()
     timestamp = int(time.time())
     for room_id in room_id_list:
@@ -244,6 +249,6 @@ def update_electricity(usercode, passwd):
 if __name__ == "__main__":
     sync_data_with_cloud()
     while True:
-        update_electricity(usercode, password)
+        update_electricity(usercode, password, cookie)
         logger.info("This cycle ends, waiting to enter the next cycle")
         time.sleep(interval)

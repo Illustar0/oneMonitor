@@ -1,6 +1,8 @@
 [accounts]
 usercode = "Your usercode"
 password = "Your password"
+# cookie = "userToken=Your userToken; Domain=.zzu.edu.cn; Path=/"
+cookie = "Your cookie"
 
 [setting]
 # 不要设置过低，会导致账号被锁定

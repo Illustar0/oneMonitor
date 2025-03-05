@@ -6,7 +6,7 @@ authors = [{ name = "Illustar0", email = "me@illustar0.com" }]
 requires-python = "~=3.12"
 readme = "README.md"
 dependencies = [
-    "zzupy>=2.1.0,<3",
+    "zzupy>=3.0.0,<4",
     "streamlit>=1.41.1,<2",
     "sqlalchemy>=2.0.36,<3",
     "toml>=0.10.2,<0.11",
