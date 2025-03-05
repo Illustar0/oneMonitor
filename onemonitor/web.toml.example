@@ -3,13 +3,3 @@ pageTitle = "oneMonitor"
 refreshInterval = 600
 apiEndpoint = "http://127.0.0.1:8000"
 apiKey = "233"
-
-[auth]
-webAuth = true
-
-[auth.cookie]
-expiryDays = 30
-key = "a_random_key"
-name = "a_cookie_name"
-
-[auth.usernames]

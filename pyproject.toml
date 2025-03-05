@@ -14,7 +14,6 @@ dependencies = [
     "uvicorn[standard]>=0.34.0,<0.35",
     "plotly>=6,<7",
     "loguru>=0.7.3,<0.8",
-    "streamlit-authenticator>=0.4.1,<0.5",
     "pushx>=0.4.0,<0.5",
 ]
 
