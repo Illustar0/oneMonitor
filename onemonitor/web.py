@@ -26,7 +26,7 @@ logger.configure(
     ]
 )
 logger.add(
-    "worker.log",
+    "web.log",
     rotation="10 MB",
     retention="7 days",
     format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> - <lvl>{level:^8}</> - <cyan>{name:^12}</cyan> : <cyan>{module:^7}</cyan> : <cyan>{line:^4}</cyan> - <lvl>{message}</>",
