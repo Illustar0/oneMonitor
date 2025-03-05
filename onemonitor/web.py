@@ -1,6 +1,5 @@
 # Copyright © 2025 Illustar0.
 # All rights reserved.
-import re
 import sys
 import json
 import toml
@@ -8,7 +7,6 @@ import httpx
 import pandas as pd
 import streamlit as st
 from loguru import logger
-from typing import Optional, List, Callable, Dict
 
 config = toml.load("web.toml")
 page_title = config["setting"]["pageTitle"]
@@ -115,9 +113,6 @@ with st.sidebar:
             df_hourly["room"] = name
             electricity_data.append(df_hourly[["electricity", "room"]])
 
-    if web_auth:
-        # noinspection PyUnboundLocalVariable
-        authenticator.logout(callback=on_logout_button_click, location="sidebar")
 
 with placeholder.container():
     st.title("Electricity Data 😎")
