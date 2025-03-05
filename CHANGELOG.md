@@ -1,6 +1,53 @@
 # CHANGELOG
 
 
+## v0.3.0 (2025-03-05)
+
+### Bug Fixes
+
+- Delete useless configuration
+  ([`2cde95b`](https://github.com/Illustar0/oneMonitor/commit/2cde95b801aaf5f306e10cd99a5769e444d31649))
+
+- Log format
+  ([`602c4b7`](https://github.com/Illustar0/oneMonitor/commit/602c4b7871144b5abdf1fe4646dc414a1ff8b494))
+
+- Wrong log name
+  ([`99966b6`](https://github.com/Illustar0/oneMonitor/commit/99966b6974ccfe25bf84302b47559aa7980fe434))
+
+### Chores
+
+- Bump zzupy to v2.1.0
+  ([`1ec9ef9`](https://github.com/Illustar0/oneMonitor/commit/1ec9ef938190ed28da793219ce089e0bbd5c38f5))
+
+- Update renovate config
+  ([`3985b17`](https://github.com/Illustar0/oneMonitor/commit/3985b17c66b1aa801978df522a97a3596e162680))
+
+- **deps**: Update python-semantic-release/python-semantic-release action to v9.20.0
+  ([#5](https://github.com/Illustar0/oneMonitor/pull/5),
+  [`e670431`](https://github.com/Illustar0/oneMonitor/commit/e6704313041ae039dc311ecac23ff52b8fe102ea))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+- **deps**: Update python-semantic-release/python-semantic-release action to v9.21.0
+  ([#6](https://github.com/Illustar0/oneMonitor/pull/6),
+  [`031d33e`](https://github.com/Illustar0/oneMonitor/commit/031d33ee25f4ba007ac0d635f131e19ba5e23110))
+
+Co-authored-by: renovate[bot] <29139614+renovate[bot]@users.noreply.github.com>
+
+### Features
+
+- Rm web auth
+  ([`f43ee33`](https://github.com/Illustar0/oneMonitor/commit/f43ee338d64c767e1ae2c33b2aecc2cc12f363d6))
+
+- Support cookie login
+  ([`c105e95`](https://github.com/Illustar0/oneMonitor/commit/c105e95b99cb025eeaa755c516035bf7a03746a4))
+
+### Performance Improvements
+
+- Remove unused code and dependencies
+  ([`e9a0a8a`](https://github.com/Illustar0/oneMonitor/commit/e9a0a8ae7960b34e58415731effc340304193e34))
+
+
 ## v0.2.1 (2025-02-11)
 
 ### Bug Fixes

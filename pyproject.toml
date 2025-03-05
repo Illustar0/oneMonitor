@@ -1,6 +1,6 @@
 [project]
 name = "onemonitor"
-version = "0.2.0"
+version = "0.3.0"
 description = ""
 authors = [{ name = "Illustar0", email = "me@illustar0.com" }]
 requires-python = "~=3.12"
