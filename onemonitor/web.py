@@ -76,6 +76,7 @@ def update_config():
         toml.dump(config, file)
 
 
+st.set_page_config(page_title)
 placeholder = st.empty()
 
 response = fetch_rooms()

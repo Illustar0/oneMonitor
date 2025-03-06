@@ -17,7 +17,7 @@ password = config["accounts"]["password"]
 interval = config["setting"]["interval"]
 api_endpoint = config["setting"]["apiEndpoint"]
 apikey = config["setting"]["apiKey"]
-if "cookie"in config["accounts"]:
+if "cookie" in config["accounts"]:
     cookie = SimpleCookie().load(config["accounts"]["cookie"])
 else:
     cookie = None
@@ -198,7 +198,7 @@ def sync_data_with_cloud():
 
 
 # 更新电量 同时 通知
-def update_electricity(usercode, passwd, cookie = None):
+def update_electricity(usercode, passwd, cookie=None):
     me = ZZUPy(usercode, passwd, cookie)
     me.login()
     timestamp = int(time.time())
