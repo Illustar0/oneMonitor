@@ -10,8 +10,15 @@ from zzupy import ZZUPy
 from loguru import logger
 from http.cookies import SimpleCookie
 
+
+def load_config():
+    try:
+        return toml.load("worker.toml")
+    except Exception as e:
+        logger.error(f"配置加载失败: {e}")
+        sys.exit(1)
 # 读取配置
-config = toml.load("worker.toml")
+config = load_config()
 usercode = config["accounts"]["usercode"]
 password = config["accounts"]["password"]
 interval = config["setting"]["interval"]
